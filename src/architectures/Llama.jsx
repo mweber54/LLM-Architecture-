@@ -1,5 +1,5 @@
 // src/architectures/Llama.jsx
-import React from 'react';
+import React, { memo } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   MiniMap,
@@ -11,65 +11,28 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
+/**
+ * Default node styling applied to every node.
+ */
+const defaultNodeStyle = {
+  fontFamily: 'monospace',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  whiteSpace: 'pre-wrap',
+  padding: '10px',
+  border: '1px solid #aaa',
+  borderRadius: '5px',
+  backgroundColor: '#f2f2f2',
+};
+
 /*
   --------------------------
   CUSTOM NODE: LlamaNxNode
   --------------------------
-  This represents one block of the "Nx" repeated structure in Llama,
-  showing:
-    1) RMS Norm
-    2) Self-Attention (Grouped Multi-Query) + KV Cache + Rotary
-       with sub-blocks for Q, K, V, and ⊗ Rotary
-    3) RMS Norm
-    4) Feed Forward (SwiGLU)
-    5) RMS Norm
-  plus an "Nx" label on the left (rotated), and a dotted border to match
-  the reference diagram's style.
+  This custom node renders the "Nx" block.
 */
-
-function LlamaNxNode() {
-  return (
-    <div style={nxStyles.container}>
-      <div style={nxStyles.nxLabel}>Nx</div>
-
-      {/* Sub-block #1 */}
-      <div style={nxStyles.subBlock}>
-        <div>RMS Norm</div>
-      </div>
-
-      {/* Sub-block #2: Self-Attention with Q, K, V, Rotary */}
-      <div style={nxStyles.subBlock}>
-        <div style={{ fontWeight: 'bold', marginBottom: 4 }}>Self-Attention</div>
-        <div style={nxStyles.qkvContainer}>
-          <div style={nxStyles.qkvBlock}>Q</div>
-          <div style={nxStyles.qkvBlock}>K</div>
-          <div style={nxStyles.qkvBlock}>V</div>
-          <div style={nxStyles.qkvBlock}>⊗ Rotary</div>
-        </div>
-        <div style={{ fontSize: 10 }}>(Grouped Multi-Query, KV Cache)</div>
-      </div>
-
-      {/* Sub-block #3 */}
-      <div style={nxStyles.subBlock}>
-        <div>RMS Norm</div>
-      </div>
-
-      {/* Sub-block #4 */}
-      <div style={nxStyles.subBlock}>
-        <div>Feed Forward</div>
-        <div style={{ fontSize: 10 }}>(SwiGLU)</div>
-      </div>
-
-      {/* Sub-block #5 */}
-      <div style={nxStyles.subBlock}>
-        <div>RMS Norm</div>
-      </div>
-    </div>
-  );
-}
-
-// Styles for the Nx block
-const nxStyles = {
+const styles = {
   container: {
     width: 220,
     minHeight: 280,
@@ -120,141 +83,100 @@ const nxStyles = {
   },
 };
 
-/*
-  --------------------------
-  NODE TYPES
-  --------------------------
-  We register a custom node type "llamaNx" so that one of our nodes can
-  render the Nx block above.
-*/
+/**
+ * Reusable sub-block component for the LlamaNxNode.
+ */
+const SubBlock = ({ title, subText, children }) => (
+  <div style={styles.subBlock}>
+    {title && <div style={{ fontWeight: 'bold', marginBottom: 4 }}>{title}</div>}
+    {children}
+    {subText && <div style={{ fontSize: 10 }}>{subText}</div>}
+  </div>
+);
+
+/**
+ * Custom Node: LlamaNxNode.
+ */
+const LlamaNxNode = memo(() => {
+  const qkvItems = ['Q', 'K', 'V', '⊗ Rotary'];
+
+  return (
+    <div style={styles.container}>
+      <div style={styles.nxLabel}>Nx</div>
+      
+      <SubBlock title="RMS Norm" />
+      
+      <SubBlock title="Self-Attention" subText="(Grouped Multi-Query, KV Cache)">
+        <div style={styles.qkvContainer}>
+          {qkvItems.map((item) => (
+            <div key={item} style={styles.qkvBlock}>{item}</div>
+          ))}
+        </div>
+      </SubBlock>
+      
+      <SubBlock title="RMS Norm" />
+      <SubBlock title="Feed Forward" subText="(SwiGLU)" />
+      <SubBlock title="RMS Norm" />
+    </div>
+  );
+});
+
+// Register the custom node type.
 const nodeTypes = {
   llamaNx: LlamaNxNode,
 };
 
-/*
-  --------------------------
-  INITIAL NODES
-  --------------------------
-  We'll create a pipeline that matches the Llama diagram:
-
-      Input
-        ↓
-      Embeddings
-        ↓
-      RMS Norm
-        ↓
-      Nx block (RMS Norm + Self-Attn + FF, repeated Nx times)
-        ↓
-      Final RMS Norm
-        ↓
-      Linear
-        ↓
-      Softmax
-        ↓
-      Output
-
-  Positions are just placeholders; adjust as needed.
-*/
+/**
+ * Initial nodes for the flow diagram.
+ * The RMS Norm nodes have been removed. Nodes now include:
+ * Input -> Embeddings -> Nx block -> Linear -> Softmax -> Output.
+ */
 const initialNodes = [
-  // Bottom: Input
   {
     id: 'input',
     position: { x: 0, y: 35 },
     data: { label: 'Input' },
-    style: { border: 'none', background: 'none', fontSize: 14 },
+    style: { ...defaultNodeStyle },
     type: 'input',
   },
-  // Embeddings
   {
     id: 'embeddings',
     position: { x: 15, y: 100 },
     data: { label: 'Embeddings' },
-    style: {
-      border: '2px solid #999',
-      borderRadius: 4,
-      padding: '6px',
-      background: '#fff',
-      textAlign: 'center',
-      width: 120,
-    },
+    style: { ...defaultNodeStyle, width: 120 },
   },
-  // New RMS Norm node
-  {
-    id: 'rms-norm-emb',
-    position: { x: 25, y: 175 },
-    data: { label: 'RMS Norm' },
-    style: {
-      border: '2px solid #999',
-      borderRadius: 4,
-      padding: '6px',
-      background: '#fff',
-      textAlign: 'center',
-      width: 100,
-    },
-  },
-  {
-    id: 'final-rms',
-    position: { x: 25, y: 398 },
-    data: { label: 'RMS Norm' },
-    style: {
-      border: '2px solid #999',
-      borderRadius: 4,
-      padding: '6px',
-      background: '#fff',
-      textAlign: 'center',
-      width: 100,
-    },
-  },
-  // Nx block (custom node)
   {
     id: 'nx-block',
     type: 'llamaNx',
     position: { x: -37, y: 150 },
     data: {},
   },
-  // Linear
   {
     id: 'linear',
     position: { x: 35, y: 475 },
     data: { label: 'Linear' },
-    style: {
-      border: '2px solid #999',
-      borderRadius: 4,
-      padding: '6px',
-      background: '#fff',
-      textAlign: 'center',
-      width: 80,
-    },
+    style: { ...defaultNodeStyle, width: 80 },
   },
-  // Softmax
   {
     id: 'softmax',
     position: { x: 35, y: 525 },
     data: { label: 'Softmax' },
-    style: {
-      border: '2px solid #999',
-      borderRadius: 4,
-      padding: '6px',
-      background: '#fff',
-      textAlign: 'center',
-      width: 80,
-    },
+    style: { ...defaultNodeStyle, width: 80 },
   },
-  // Output (top)
   {
     id: 'output',
     position: { x: 0, y: 575 },
     data: { label: 'Output' },
-    style: { border: 'none', background: 'none', fontSize: 14 },
+    style: { ...defaultNodeStyle },
     type: 'output',
   },
 ];
 
-/*
-  --------------------------
-  INITIAL EDGES
-  --------------------------
-*/
+/**
+ * Initial edges for the flow diagram.
+ * Updated to connect embeddings directly to the Nx block,
+ * and the Nx block directly to the linear node.
+ */
 const initialEdges = [
   {
     id: 'edge-input-emb',
@@ -263,28 +185,21 @@ const initialEdges = [
     markerEnd: { type: MarkerType.ArrowClosed },
   },
   {
-    id: 'edge-emb-rms',
+    id: 'edge-emb-linear',
     source: 'embeddings',
-    target: 'rms-norm-emb',
+    target: 'linear',
     markerEnd: { type: MarkerType.ArrowClosed },
-    style: { stroke: 'rgba(0, 0, 0, 0.2)' }, 
   },
   {
-    id: 'edge-rms-nx',
-    source: 'rms-norm-emb',
+    id: 'edge-emb-nx',
+    source: 'embeddings',
     target: 'nx-block',
     markerEnd: { type: MarkerType.ArrowClosed },
-    style: { stroke: 'rgba(0, 0, 0, 0.2)' }, 
+    style: { stroke: 'rgba(0, 0, 0, 0.2)' },
   },
   {
-    id: 'edge-nx-finalrms',
+    id: 'edge-nx-linear',
     source: 'nx-block',
-    target: 'final-rms',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-finalrms-linear',
-    source: 'final-rms',
     target: 'linear',
     markerEnd: { type: MarkerType.ArrowClosed },
   },
@@ -302,6 +217,9 @@ const initialEdges = [
   },
 ];
 
+/**
+ * The main Llama component rendering the flow diagram.
+ */
 function Llama() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);

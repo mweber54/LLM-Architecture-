@@ -14,3 +14,32 @@ code {
 .react-flow_edge {
   stroke: rgba(0, 0, 0, 0.2) !important;
 }
+
+/* styles.css */
+.custom-node {
+  width: 160px;
+  height: 60px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  text-align: center;
+  position: relative; /* needed for absolute-positioned handles */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* If you want all handles to look the same too: */
+.custom-handle {
+  background: #555;   /* default gray color */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+}
+
+.react-flow__node.output-node {
+  border: 1px solid #000000;
+  border-radius: 2px;
+}
+
