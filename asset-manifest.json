@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/LLM-Architecture/static/css/main.622f443c.css",
+    "main.js": "/LLM-Architecture/static/js/main.eb513310.js",
+    "index.html": "/LLM-Architecture/index.html",
+    "main.622f443c.css.map": "/LLM-Architecture/static/css/main.622f443c.css.map",
+    "main.eb513310.js.map": "/LLM-Architecture/static/js/main.eb513310.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.622f443c.css",
+    "static/js/main.eb513310.js"
+  ]
+}
