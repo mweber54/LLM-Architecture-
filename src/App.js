@@ -146,7 +146,7 @@ function Landing() {
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <div className="App">
         <header style={{
           padding: '20px',
@@ -168,7 +168,6 @@ function App() {
               <li>
                 <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>Home</Link>
               </li>
-              {/* Additional direct links can go here if needed */}
             </ul>
           </nav>
         </header>
