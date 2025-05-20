@@ -1,7 +1,42 @@
 // src/architectures/GPT-3.5.jsx
 import React from 'react';
-import ReactFlow, { ReactFlowProvider, MiniMap, Controls, Background, Handle } from 'reactflow';
+import ReactFlow, {
+  ReactFlowProvider,
+  MiniMap,
+  Controls,
+  Background,
+} from 'reactflow';
+import { BaseEdge, getBezierPath } from 'reactflow';
 import 'reactflow/dist/style.css';
+
+// Custom red animated arrow edge
+const RedArrowEdge = ({ id, sourceX, sourceY, targetX, targetY }) => {
+  const [edgePath] = getBezierPath({ sourceX, sourceY, targetX, targetY });
+
+  return (
+    <>
+      <defs>
+        <marker
+          id="arrow-red"
+          markerWidth="6"
+          markerHeight="6"
+          refX="6"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d="M0,0 L6,3 L0,6 Z" fill="red" />
+        </marker>
+      </defs>
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        markerEnd="url(#arrow-red)"
+        style={{ stroke: 'red' }}
+      />
+    </>
+  );
+};
 
 const initialNodes = [
   {
@@ -18,7 +53,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: 'transparent',
     },
   },
   {
@@ -34,7 +69,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#FFDAB9', // peach
     },
   },
   {
@@ -50,7 +85,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#edffb0',
     },
   },
   {
@@ -66,19 +101,18 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#FFA500', // orange
     },
   },
   {
     id: '5',
     data: {
       label: (
-        <div style={{ whiteSpace: 'pre-line', textAlign: 'center', position: 'relative' }}>
-          <Handle type="source" position="top" id="top-handle" style={{ background: '#555' }} />
+        <div style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>
           Enhanced Transformer Blocks (x96)
-          {"\n"}[Enhanced Masked Multi-Head Self-Attention]
-          {"\n"}[Optimized Feed-Forward Network]
-          {"\n"}[Improved Residual Connections & Layer Norm]
+          {'\n'}[Enhanced Masked Multi-Head Self-Attention]
+          {'\n'}[Optimized Feed-Forward Network]
+          {'\n'}[Improved Residual Connections & Layer Norm]
         </div>
       ),
     },
@@ -92,7 +126,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#81b6f7', // blue
       width: '300px',
     },
   },
@@ -102,9 +136,9 @@ const initialNodes = [
       label: (
         <div style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>
           - 96 Layers
-          {"\n"}- 96 Enhanced Attention Heads
-          {"\n"}- 12,288 Hidden Dimensions
-          {"\n"}- Extended Context Window: 4096 Tokens
+          {'\n'}- 96 Enhanced Attention Heads
+          {'\n'}- 12,288 Hidden Dimensions
+          {'\n'}- Extended Context Window: 4096 Tokens
         </div>
       ),
     },
@@ -131,7 +165,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#bea9fc',
     },
   },
   {
@@ -147,7 +181,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#fff1cc',
     },
   },
   {
@@ -163,7 +197,7 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#D8BFD8', // purple
     },
   },
   {
@@ -179,28 +213,39 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#90EE90', // green
     },
   },
 ];
 
 const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e2-3', source: '2', target: '3', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e3-4', source: '3', target: '4', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e4-5', source: '4', target: '5', markerEnd: { type: 'arrowclosed' } },
-  { id: 'edge-5-5-details', source: '5', target: '5-details', sourceHandle: 'top-handle', animated: true },
-  { id: 'e5-6', source: '5', target: '6', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e6-6.5', source: '6', target: '6.5', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e6.5-7', source: '6.5', target: '7', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e7-8', source: '7', target: '8', markerEnd: { type: 'arrowclosed' } },
+  { id: 'e1-2', source: '1', target: '2', type: 'redArrow', animated: true },
+  { id: 'e2-3', source: '2', target: '3', type: 'redArrow', animated: true },
+  { id: 'e3-4', source: '3', target: '4', type: 'redArrow', animated: true },
+  { id: 'e4-5', source: '4', target: '5', type: 'redArrow', animated: true },
+  {
+    id: 'edge-5-5-details',
+    source: '5',
+    target: '5-details',
+    type: 'redArrow',
+    animated: true,
+  },
+  { id: 'e5-6', source: '5', target: '6', type: 'redArrow', animated: true },
+  { id: 'e6-6.5', source: '6', target: '6.5', type: 'redArrow', animated: true },
+  { id: 'e6.5-7', source: '6.5', target: '7', type: 'redArrow', animated: true },
+  { id: 'e7-8', source: '7', target: '8', type: 'redArrow', animated: true },
 ];
 
 function GPT35ArchitectureFlow() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <ReactFlowProvider>
-        <ReactFlow nodes={initialNodes} edges={initialEdges} fitView>
+        <ReactFlow
+          nodes={initialNodes}
+          edges={initialEdges}
+          fitView
+          edgeTypes={{ redArrow: RedArrowEdge }}
+        >
           <MiniMap />
           <Controls />
           <Background />

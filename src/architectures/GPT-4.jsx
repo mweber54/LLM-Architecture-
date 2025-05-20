@@ -1,3 +1,4 @@
+// src/architectures/Transformer.jsx
 import React from 'react';
 import ReactFlow, {
   ReactFlowProvider,
@@ -6,13 +7,52 @@ import ReactFlow, {
   Background,
   useNodesState,
   useEdgesState,
-  MarkerType,
 } from 'reactflow';
+import { BaseEdge, getBezierPath } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 
+const RedArrowEdge = ({ id, sourceX, sourceY, targetX, targetY }) => {
+  const [edgePath] = getBezierPath({ sourceX, sourceY, targetX, targetY });
+
+  return (
+    <>
+      <defs>
+        <marker
+          id="arrow-red"
+          markerWidth="6"
+          markerHeight="6"
+          refX="6"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d="M0,0 L6,3 L0,6 Z" fill="red" />
+        </marker>
+      </defs>
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        markerEnd="url(#arrow-red)"
+        style={{ stroke: 'red' }}
+      />
+    </>
+  );
+};
+
+const sharedStyle = {
+  fontFamily: 'monospace',
+  fontWeight: 'bold',
+  fontSize: '10px',
+  textAlign: 'center',
+  whiteSpace: 'pre-wrap',
+  padding: '10px',
+  border: '1px solid #aaa',
+  borderRadius: '5px',
+  backgroundColor: '#f2f2f2',
+};
+
 const initialNodes = [
-  // Top row: Inputs (left) and Outputs (shifted right) (right) with no border
   {
     id: 'inputs',
     position: { x: 100, y: 50 },
@@ -26,8 +66,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      },
+      backgroundColor: 'transparent',
+    },
   },
   {
     id: 'outputs-shifted',
@@ -42,106 +82,61 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      },
+      backgroundColor: 'transparent',
+    },
   },
-
-
-  // Second row: Input Embedding (left) & Output Embedding (right)
   {
     id: 'input-embedding',
     position: { x: 110, y: 130 },
     data: { label: 'Input Embedding' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '130px'
-      },
+      ...sharedStyle,
+      backgroundColor: '#FFDAB9',
+      width: '130px',
+    },
   },
   {
     id: 'output-embedding',
     position: { x: 310, y: 130 },
     data: { label: 'Output Embedding' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '130px'
-      },
+      ...sharedStyle,
+      backgroundColor: '#FFDAB9',
+      width: '130px',
+    },
   },
-
-
-  // Third row: Positional Encoding (Encoder) & (Decoder)
   {
     id: 'pos-enc-encoder',
     position: { x: 95, y: 210 },
     data: { label: 'Positional Encoding (Encoder)' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '160px'
-      },
+      ...sharedStyle,
+      backgroundColor: '#edffb0',
+      width: '160px',
+    },
   },
   {
     id: 'pos-enc-decoder',
     position: { x: 295, y: 210 },
     data: { label: 'Positional Encoding (Decoder)' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '160px'
-      },
+      ...sharedStyle,
+      backgroundColor: '#edffb0',
+      width: '160px',
+    },
   },
-
-
-  // Fourth row: Encoder stack in the center
   {
     id: 'encoder-stack',
     position: { x: 25, y: 300 },
-    data: { label: 'Encoder (Nx)\n[Multi-Head Attention + Feed Forward]' },
+    data: {
+      label: 'Encoder (Nx)\n[Multi-Head Attention + Feed Forward]',
+    },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '250px'
-      },
+      ...sharedStyle,
+      backgroundColor: '#81b6f7',
+      width: '250px',
+    },
   },
-
-
-  // Fifth row: Decoder stack in the center
   {
     id: 'decoder-stack',
     position: { x: 115, y: 400 },
@@ -150,162 +145,66 @@ const initialNodes = [
         'Decoder (Nx)\n[Masked MHA + MHA (encoder output) + Feed Forward]',
     },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '320px'
+      ...sharedStyle,
+      backgroundColor: '#81b6f7',
+      width: '320px',
     },
   },
-
-
-  // Sixth row: Linear
   {
     id: 'linear',
     position: { x: 235, y: 490 },
     data: { label: 'Linear' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '80px'
-      },
+      ...sharedStyle,
+      backgroundColor: '#D8BFD8',
+      width: '80px',
+    },
   },
-
-
-  // Seventh row: Softmax
   {
     id: 'softmax',
     position: { x: 235, y: 560 },
     data: { label: 'Softmax' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      width: '80px'
+      ...sharedStyle,
+      backgroundColor: '#90EE90',
+      width: '80px',
     },
   },
-
-
-  // Eighth row: Output Probabilities (no border)
   {
     id: 'output-probabilities',
     position: { x: 200, y: 630 },
     data: { label: 'Output Probabilities' },
     style: {
-      fontFamily: 'monospace',
-      fontWeight: 'bold',
-      fontSize: '10px',
-      textAlign: 'center',
-      whiteSpace: 'pre-wrap',
-      padding: '10px',
-      border: '1px solid #aaa',
-      borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-      },
+      ...sharedStyle,
+      backgroundColor: 'transparent',
+    },
   },
 ];
 
-
 const initialEdges = [
-  // Encoder flow (left side)
-  {
-    id: 'edge-inputs-embedding',
-    source: 'inputs',
-    target: 'input-embedding',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-embedding-posenc-enc',
-    source: 'input-embedding',
-    target: 'pos-enc-encoder',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-posenc-encoder-stack',
-    source: 'pos-enc-encoder',
-    target: 'encoder-stack',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-
-
-  // Decoder flow (right side)
-  {
-    id: 'edge-outputs-embedding',
-    source: 'outputs-shifted',
-    target: 'output-embedding',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-embedding-posenc-dec',
-    source: 'output-embedding',
-    target: 'pos-enc-decoder',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-posenc-decoder-stack',
-    source: 'pos-enc-decoder',
-    target: 'decoder-stack',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-
-
-  // Cross-attention from encoder to decoder
+  { id: 'edge-inputs-embedding', source: 'inputs', target: 'input-embedding', type: 'redArrow', animated: true },
+  { id: 'edge-embedding-posenc-enc', source: 'input-embedding', target: 'pos-enc-encoder', type: 'redArrow', animated: true },
+  { id: 'edge-posenc-encoder-stack', source: 'pos-enc-encoder', target: 'encoder-stack', type: 'redArrow', animated: true },
+  { id: 'edge-outputs-embedding', source: 'outputs-shifted', target: 'output-embedding', type: 'redArrow', animated: true },
+  { id: 'edge-embedding-posenc-dec', source: 'output-embedding', target: 'pos-enc-decoder', type: 'redArrow', animated: true },
+  { id: 'edge-posenc-decoder-stack', source: 'pos-enc-decoder', target: 'decoder-stack', type: 'redArrow', animated: true },
   {
     id: 'edge-encoder-decoder',
     source: 'encoder-stack',
     target: 'decoder-stack',
+    type: 'redArrow',
     animated: true,
-    label: 'Encoder Output',
-    labelStyle: { fontFamily: 'monospace'},
-    markerEnd: { type: MarkerType.ArrowClosed },
   },
-
-
-  // Final projection flow (decoder -> linear -> softmax -> output probs)
-  {
-    id: 'edge-decoder-linear',
-    source: 'decoder-stack',
-    target: 'linear',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-linear-softmax',
-    source: 'linear',
-    target: 'softmax',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
-  {
-    id: 'edge-softmax-probs',
-    source: 'softmax',
-    target: 'output-probabilities',
-    markerEnd: { type: MarkerType.ArrowClosed },
-  },
+  { id: 'edge-decoder-linear', source: 'decoder-stack', target: 'linear', type: 'redArrow', animated: true },
+  { id: 'edge-linear-softmax', source: 'linear', target: 'softmax', type: 'redArrow', animated: true },
+  { id: 'edge-softmax-probs', source: 'softmax', target: 'output-probabilities', type: 'redArrow', animated: true },
 ];
 
 
-function App() {
-  // Use React Flow’s node/edge state so you can drag them if needed
+
+function TransformerArchitectureFlow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
@@ -315,8 +214,8 @@ function App() {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          edgeTypes={{ redArrow: RedArrowEdge }}
           fitView
-          attributionPosition="bottom-right"
         >
           <MiniMap />
           <Controls />
@@ -327,8 +226,4 @@ function App() {
   );
 }
 
-
-export default App;
-
-
-
+export default TransformerArchitectureFlow;

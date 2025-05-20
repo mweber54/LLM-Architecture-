@@ -7,6 +7,8 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   Handle,
+  getBezierPath,
+  MarkerType,
 } from 'react-flow-renderer';
 
 const nodeStyle = {
@@ -97,45 +99,49 @@ const initialNodes = [
     data: { label: 'Input Tokens' },
     position: { x: 60, y: 30 },
     style: { 
-    width: 120, 
-    textAlign: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',  },
+      width: 120, 
+      textAlign: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#ffdab9', // peach for token embeddings
+    },
   },
   {
     id: 'targetTokens',
     data: { label: 'Target Tokens' },
     position: { x: 60, y: 600 },
     style: { 
-    width: 120, 
-    textAlign: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',  },
+      width: 120, 
+      textAlign: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#ffdab9', // peach for token embeddings
+    },
   },
 
   // === MAIN MODEL (left) ===
   {
     id: 'embeddingLayerMain',
     type: 'embedding',
-    data: { label: 'Embedding Layer (shared)', variant: 'shared' }, // Add variant: 'shared'
+    data: { label: 'Embedding Layer (shared)', variant: 'shared' },
     position: { x: -150, y: 125 },
     style: { 
-    width: 142, 
-    textAlign: 'center', backgroundColor: '#f2f2f2', }
+      width: 142, 
+      textAlign: 'center', 
+      backgroundColor: '#edffb0', // yellow for positional embeddings
+    }
   },
   {
     id: 'transformerBlocks',
@@ -154,9 +160,9 @@ const initialNodes = [
       textAlign: 'center',
       whiteSpace: 'pre-wrap',
       padding: '10px',
-      border: '1px solid #000000', // Unified border for all embedding nodes
+      border: '1px solid #000000',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#81b6f7', // blue for transformer
     },
   },
   {
@@ -165,16 +171,16 @@ const initialNodes = [
     data: { label: 'Output Head', variant: 'left' },
     position: { x: -155, y: 425 },
     style: {
-    textAlign: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', 
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',
+      textAlign: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000', 
+      borderRadius: '5px',
+      backgroundColor: '#bea9fc', // purple for final layer
     },
   },
   {
@@ -182,21 +188,22 @@ const initialNodes = [
     data: { label: 'Cross-Entropy Loss (Main)' },
     position: { x: -160, y: 500 },
     style: { 
-    width: 160, 
-    textAlign: 'center', 
-    backgroundColor: '#fff3e0',
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px', },
+      width: 160, 
+      textAlign: 'center', 
+      backgroundColor: '#95e6af', // green for softmax
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+    },
   },
 
   // === MTP MODULE 1 (middle) ===
@@ -205,87 +212,96 @@ const initialNodes = [
     type: 'embedding',
     data: { label: 'Embedding Layer (shared)', variant: 'middle' },
     position: { x: 50, y: 125 },
-    style: { width: 142, textAlign: 'center', backgroundColor: '#f2f2f2',},
+    style: { 
+      width: 142, 
+      textAlign: 'center', 
+      backgroundColor: '#edffb0', // yellow for positional embeddings
+    },
   },
   {
     id: 'transformerBlockMTP1',
     data: { label: 'Transformer Block' },
     position: { x: 61, y: 350 },
     style: { 
-    width: 120, 
-    textAlign: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',},
+      width: 120, 
+      textAlign: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#81b6f7', // blue for transformer
+    },
   },
   {
     id: 'rmsNormMTP1',
     data: { label: 'RMSNorm' },
     position: { x: 71, y: 200 },
     style: { 
-    width: 100, 
-    textAlign: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',},
+      width: 100, 
+      textAlign: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#f7a881', // orange for add
+    },
   },
   {
     id: 'linearProjectionMTP1',
     data: { label: 'Linear Projection' },
     position: { x: 61, y: 275 },
     style: { 
-    width: 120, 
-    textAlign: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',
-  },
+      width: 120, 
+      textAlign: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#d8bfd8', // lavender for linear
+    },
   },
   {
     id: 'outputHeadMTP1',
     type: 'output',
     data: { label: 'Output Head', variant: 'middle' },
     position: { x: 46, y: 425 },
-    style: { backgroundColor: '#f2f2f2',}
+    style: { 
+      backgroundColor: '#bea9fc', // purple for final layer
+    }
   },
   {
     id: 'mtp1CrossEntropy',
     data: { label: 'Cross-Entropy Loss (MTP1)' },
     position: { x: 41, y: 500 },
     style: { 
-    width: 160, 
-    textAlign: 'center', 
-    backgroundColor: '#fff3e0', 
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px' },
+      width: 160, 
+      textAlign: 'center', 
+      backgroundColor: '#95e6af', // green for softmax
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+    },
   },
 
   // === MTP MODULE 2 (right) ===
@@ -294,184 +310,402 @@ const initialNodes = [
     type: 'embedding',
     data: { label: 'Embedding Layer (shared)', variant: 'right' },
     position: { x: 250, y: 125 },
-    style: { width: 142, textAlign: 'center', backgroundColor: '#f2f2f2',},
+    style: { 
+      width: 142, 
+      textAlign: 'center', 
+      backgroundColor: '#edffb0', // yellow for positional embeddings
+    },
   },
   {
     id: 'transformerBlockMTP2',
     data: { label: 'Transformer Block' },
     position: { x: 261, y: 350 },
     style: { 
-    width: 120, 
-    textAlign: 'center', 
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2', },
+      width: 120, 
+      textAlign: 'center', 
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#81b6f7', // blue for transformer
+    },
   },
   {
     id: 'linearProjectionMTP2',
     data: { label: 'Linear Projection' },
     position: { x: 261, y: 275 },
     style: { 
-    width: 120, 
-    textAlign: 'center', 
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',},
+      width: 120, 
+      textAlign: 'center', 
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#d8bfd8', // lavender for linear
+    },
   },
   {
     id: 'rmsNormMTP2',
     data: { label: 'RMSNorm' },
     position: { x: 271, y: 200 },
     style: { 
-    width: 100, 
-    textAlign: 'center', 
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px',
-    backgroundColor: '#f2f2f2',},
+      width: 100, 
+      textAlign: 'center', 
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+      backgroundColor: '#f7a881', // orange for add
+    },
   },
   {
     id: 'outputHeadMTP2',
     type: 'output',
     data: { label: 'Output Head', variant: 'right' },
     position: { x: 246, y: 425 },
-    style: { backgroundColor: '#f2f2f2',}
+    style: { 
+      backgroundColor: '#bea9fc', // purple for final layer
+    }
   },
   {
     id: 'mtp2CrossEntropy',
     data: { label: 'Cross-Entropy Loss (MTP2)' },
     position: { x: 241, y: 500 },
     style: { 
-    width: 160, 
-    textAlign: 'center', 
-    backgroundColor: '#fff3e0', 
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center', 
-    fontFamily: 'monospace',
-    fontWeight: 'bold',
-    fontSize: '10px',
-    textAlign: 'center',
-    whiteSpace: 'pre-wrap',
-    padding: '10px',
-    border: '1px solid #000000', // Unified border for all embedding nodes
-    borderRadius: '5px' },
+      width: 160, 
+      textAlign: 'center', 
+      backgroundColor: '#95e6af', // green for softmax
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center', 
+      fontFamily: 'monospace',
+      fontWeight: 'bold',
+      fontSize: '10px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      padding: '10px',
+      border: '1px solid #000000',
+      borderRadius: '5px',
+    },
   },
 ];
 
 const initialEdges = [
-  { id: 'e-input-embeddingMain', source: 'inputTokens', target: 'embeddingLayerMain', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-input-embeddingMTP1', source: 'inputTokens', target: 'embeddingLayerMTP1', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-input-embeddingMTP2', source: 'inputTokens', target: 'embeddingLayerMTP2', markerEnd: { type: 'arrowclosed' } },
-
-  { id: 'e-embeddingMain-transformerBlocks', source: 'embeddingLayerMain', target: 'transformerBlocks', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-transformerBlocks-outputHeadMain', source: 'transformerBlocks', target: 'outputHeadMain', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-outputHeadMain-mainCrossEntropy', source: 'outputHeadMain', target: 'mainCrossEntropy', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-mainCrossEntropy-targetTokens', source: 'mainCrossEntropy', target: 'targetTokens', markerEnd: { type: 'arrowclosed' } },
-
-  { id: 'e-embeddingMTP1-rmsNormMTP1', source: 'embeddingLayerMTP1', target: 'rmsNormMTP1', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-rmsNormMTP1-linearProjectionMTP1', source: 'rmsNormMTP1', target: 'linearProjectionMTP1', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-linearProjectionMTP1-transformerBlockMTP1', source: 'linearProjectionMTP1', target: 'transformerBlockMTP1', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-transformerBlockMTP1-outputHeadMTP1', source: 'transformerBlockMTP1', target: 'outputHeadMTP1', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-outputHeadMTP1-crossEntropyMTP1', source: 'outputHeadMTP1', target: 'mtp1CrossEntropy', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-mtp1CrossEntropy-targetTokens', source: 'mtp1CrossEntropy', target: 'targetTokens', markerEnd: { type: 'arrowclosed' } },
-
-  { id: 'e-embeddingMTP2-rmsNormMTP2', source: 'embeddingLayerMTP2', target: 'rmsNormMTP2', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-rmsNormMTP2-linearProjectionMTP2', source: 'rmsNormMTP2', target: 'linearProjectionMTP2', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-linearProjectionMTP2-transformerBlockMTP2', source: 'linearProjectionMTP2', target: 'transformerBlockMTP2', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-transformerBlockMTP2-outputHeadMTP2', source: 'transformerBlockMTP2', target: 'outputHeadMTP2', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-outputHeadMTP2-crossEntropyMTP2', source: 'outputHeadMTP2', target: 'mtp2CrossEntropy', markerEnd: { type: 'arrowclosed' } },
-  { id: 'e-mtp2CrossEntropy-targetTokens', source: 'mtp2CrossEntropy', target: 'targetTokens', markerEnd: { type: 'arrowclosed' } },
-
-  // === Animated Edges for Embedding Layers (Right to Left) ===
+  // Main flow edges
   {
-    id: 'e-embeddingLayerMTP2-embeddingLayerMTP1',
-    source: 'embeddingLayerMTP2',
-    target: 'embeddingLayerMTP1',
-    animated: true,
-    style: { stroke: '#D3D3D3', strokeWidth: 2 },
-    sourceHandle: 'left',
-    targetHandle: 'right',
-  },
-  {
-    id: 'e-embeddingLayerMTP1-embeddingLayerMain',
-    source: 'embeddingLayerMTP1',
+    id: 'input-to-embedding-main',
+    source: 'inputTokens',
     target: 'embeddingLayerMain',
     animated: true,
-    style: { stroke: '#D3D3D3', strokeWidth: 2 },
-    sourceHandle: 'left',
-    targetHandle: 'right',
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
   },
-
-  // === Animated Edges for Output Heads (Right to Left) ===
   {
-    id: 'e-outputHeadMTP2-outputHeadMTP1',
-    source: 'outputHeadMTP2',
-    target: 'outputHeadMTP1',
+    id: 'embedding-to-transformer-main',
+    source: 'embeddingLayerMain',
+    target: 'transformerBlocks',
     animated: true,
-    style: { stroke: '#D3D3D3', strokeWidth: 2 },
-    sourceHandle: 'left',
-    targetHandle: 'right',
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
   },
   {
-    id: 'e-outputHeadMTP1-outputHeadMain',
-    source: 'outputHeadMTP1',
+    id: 'transformer-to-output-main',
+    source: 'transformerBlocks',
     target: 'outputHeadMain',
     animated: true,
-    style: { stroke: '#D3D3D3', strokeWidth: 2 },
-    sourceHandle: 'left',
-    targetHandle: 'right',
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
   },
-
-  // === New Animated Edges ===
   {
-    id: 'e-transformerBlocks-rmsNormMTP1',
-    source: 'transformerBlocks',
+    id: 'output-to-loss-main',
+    source: 'outputHeadMain',
+    target: 'mainCrossEntropy',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'loss-to-target',
+    source: 'mainCrossEntropy',
+    target: 'targetTokens',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  // MTP Module 1 edges
+  {
+    id: 'input-to-embedding-mtp1',
+    source: 'inputTokens',
+    target: 'embeddingLayerMTP1',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'embedding-to-rms-mtp1',
+    source: 'embeddingLayerMTP1',
     target: 'rmsNormMTP1',
     animated: true,
-    style: { stroke: '#D3D3D3', strokeWidth: 2 },
-    sourceHandle: 'top',
-    targetHandle: 'bottom',
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
   },
   {
-    id: 'e-transformerBlockMTP1-rmsNormMTP2',
+    id: 'rms-to-linear-mtp1',
+    source: 'rmsNormMTP1',
+    target: 'linearProjectionMTP1',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'linear-to-transformer-mtp1',
+    source: 'linearProjectionMTP1',
+    target: 'transformerBlockMTP1',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'transformer-to-output-mtp1',
     source: 'transformerBlockMTP1',
+    target: 'outputHeadMTP1',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'output-to-loss-mtp1',
+    source: 'outputHeadMTP1',
+    target: 'mtp1CrossEntropy',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'loss-to-target-mtp1',
+    source: 'mtp1CrossEntropy',
+    target: 'targetTokens',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  // MTP Module 2 edges
+  {
+    id: 'input-to-embedding-mtp2',
+    source: 'inputTokens',
+    target: 'embeddingLayerMTP2',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'embedding-to-rms-mtp2',
+    source: 'embeddingLayerMTP2',
     target: 'rmsNormMTP2',
     animated: true,
-    style: { stroke: '#D3D3D3', strokeWidth: 2 },
-    sourceHandle: 'top',
-    targetHandle: 'bottom',
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'rms-to-linear-mtp2',
+    source: 'rmsNormMTP2',
+    target: 'linearProjectionMTP2',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'linear-to-transformer-mtp2',
+    source: 'linearProjectionMTP2',
+    target: 'transformerBlockMTP2',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'transformer-to-output-mtp2',
+    source: 'transformerBlockMTP2',
+    target: 'outputHeadMTP2',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'output-to-loss-mtp2',
+    source: 'outputHeadMTP2',
+    target: 'mtp2CrossEntropy',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
+  },
+  {
+    id: 'loss-to-target-mtp2',
+    source: 'mtp2CrossEntropy',
+    target: 'targetTokens',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 12,
+      height: 12,
+      color: '#ff0000',
+    },
   },
 ];
 
+// Custom edge with red color and arrow marker
+const RedArrowEdge = ({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, style = {}, markerEnd }) => {
+  const [edgePath] = getBezierPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+  });
+
+  return (
+    <path
+      id={id}
+      style={{ ...style, stroke: '#ff0000', strokeWidth: 2 }}
+      className="react-flow__edge-path"
+      d={edgePath}
+      markerEnd={markerEnd}
+    />
+  );
+};
+
+// Register custom edge type
+const edgeTypes = {
+  redArrow: RedArrowEdge,
+};
+
+// Update the processedEdges to use the custom red arrow edge
+const processedEdges = initialEdges.map(edge => ({
+  ...edge,
+  animated: true,
+  type: !edge.id.includes('info') ? 'redArrow' : undefined,
+  style: edge.id.includes('info') ? { stroke: '#4D6BFE' } : undefined,
+  markerEnd: !edge.id.includes('info') ? {
+    type: MarkerType.ArrowClosed,
+    width: 20,
+    height: 20,
+    color: '#ff0000',
+  } : undefined
+}));
 
 const DeepSeekV3 = () => {
   // Use React Flow's hooks to manage nodes and edges state
@@ -479,26 +713,18 @@ const DeepSeekV3 = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   return (
-    <div style={{ width: '100%', height: '1000px' }}>
-      <h2>V3 Architecture Diagram</h2>
+    <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        fitView
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        fitView
       >
-        <MiniMap
-          nodeStrokeColor={(node) => {
-            if (node.id.includes('MTP1')) return '#FF9500';
-            if (node.id.includes('MTP2')) return '#FF2D55';
-            if (node.id.includes('Main')) return '#007AFF';
-            return '#C0C0C0';
-          }}
-        />
         <Controls />
-        <Background color="#aaa" gap={16} />
+        <Background />
       </ReactFlow>
     </div>
   );

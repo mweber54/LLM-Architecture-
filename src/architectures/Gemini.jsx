@@ -27,9 +27,9 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#ffdab9',
       width: 200
-  },
+    },
   },
   // Multimodal Encoder
   {
@@ -45,8 +45,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#edffb0',
+    },
   },
   // Cross-Modal Attention Network
   {
@@ -62,9 +62,9 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
+      backgroundColor: '#81b6f7',
       width: 200
-  },
+    },
   },
   // Multimodal Decoder
   {
@@ -80,8 +80,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#81b6f7',
+    },
   },
   // Mixture-of-Experts (MoE) components:
   {
@@ -97,8 +97,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#f7a881',
+    },
   },
   {
     id: 'image-expert',
@@ -113,8 +113,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#f7a881',
+    },
   },
   {
     id: 'fusion-expert',
@@ -129,8 +129,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#f7a881',
+    },
   },
   // Gating Network that integrates expert outputs
   {
@@ -146,8 +146,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#d8bfd8',
+    },
   },
   // Final Output
   {
@@ -163,8 +163,8 @@ const initialNodes = [
       padding: '10px',
       border: '1px solid #aaa',
       borderRadius: '5px',
-      backgroundColor: '#f2f2f2',
-  },
+      backgroundColor: '#95e6af',
+    },
   },
 ];
 
@@ -175,66 +175,86 @@ const initialEdges = [
     id: 'edge1',
     source: 'inputs',
     target: 'multimodal-encoder',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   // Multimodal Encoder to Cross-Modal Attention
   {
     id: 'edge2',
     source: 'multimodal-encoder',
     target: 'cross-modal-attention',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   // Cross-Modal Attention to Multimodal Decoder
   {
     id: 'edge3',
     source: 'cross-modal-attention',
     target: 'multimodal-decoder',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   // Multimodal Decoder to each Expert
   {
     id: 'edge4',
     source: 'multimodal-decoder',
     target: 'text-expert',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge5',
     source: 'multimodal-decoder',
     target: 'image-expert',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge6',
     source: 'multimodal-decoder',
     target: 'fusion-expert',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   // Experts to Gating Network
   {
     id: 'edge7',
     source: 'text-expert',
     target: 'gating-network',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge8',
     source: 'image-expert',
     target: 'gating-network',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge9',
     source: 'fusion-expert',
     target: 'gating-network',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   // Gating Network to Final Output
   {
     id: 'edge10',
     source: 'gating-network',
     target: 'final-output',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
 ];
 

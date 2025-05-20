@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactFlow, { MiniMap, Controls, Background } from 'reactflow';
+import ReactFlow, { MiniMap, Controls, Background, MarkerType } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 const initialNodes = [
@@ -16,7 +16,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9',
     },
   },
   {
@@ -32,7 +32,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9',
     },
   },
   {
@@ -48,7 +48,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9',
     },
   },
   {
@@ -64,7 +64,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#edffb0',
     },
   },
   {
@@ -80,7 +80,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#81b6f7',
     },
   },
   {
@@ -96,7 +96,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
     },
   },
   {
@@ -112,18 +112,18 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#95e6af',
     },
   },
 ];
 
 const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2',  markerEnd: { type: 'arrowclosed' } },
-  { id: 'e2-3', source: '2', target: '3',  markerEnd: { type: 'arrowclosed' } },
-  { id: 'e3-4', source: '3', target: '4',  markerEnd: { type: 'arrowclosed' } },
-  { id: 'e4-5', source: '4', target: '5',  markerEnd: { type: 'arrowclosed' } },
-  { id: 'e5-6', source: '5', target: '6',  markerEnd: { type: 'arrowclosed' } },
-  { id: 'e6-7', source: '6', target: '7',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e1-2', source: '1', target: '2', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e2-3', source: '2', target: '3', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e3-4', source: '3', target: '4', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e4-5', source: '4', target: '5', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e5-6', source: '5', target: '6', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e6-7', source: '6', target: '7', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
 ];
 
 function Claude3HaikuFlow() {

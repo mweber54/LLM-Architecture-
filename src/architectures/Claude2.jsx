@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactFlow, { MiniMap, Controls, Background } from 'reactflow';
+import ReactFlow, { MiniMap, Controls, Background, MarkerType } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 const initialNodes = [
@@ -16,7 +16,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9', // peach
       },
   },
   {
@@ -32,7 +32,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9', // peach
       },
   },
   {
@@ -48,7 +48,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9', // peach
       },
   },
   {
@@ -64,7 +64,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#edffb0', // yellow
       },
   },
   {
@@ -80,7 +80,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#81b6f7', // blue
       },
   },
   {
@@ -96,7 +96,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f7a881', // orange
       },
   },
   {
@@ -112,7 +112,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#bea9fc', // purple
       },
   },
   {
@@ -128,7 +128,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8', // lavender
       },
   },
   {
@@ -144,7 +144,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#95e6af', // green
       },
   },
   {
@@ -160,7 +160,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#95e6af', // green
       },
   },
   {
@@ -176,22 +176,22 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#95e6af', // green
       },
   },
 ];
 
 const initialEdges = [
-  { id: 'e1-2', source: '1', target: '2', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e2-3', source: '2', target: '3', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e3-4', source: '3', target: '4', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e4-5', source: '4', target: '5', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e5-6', source: '5', target: '6', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e6-7', source: '6', target: '7', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e7-8', source: '7', target: '8', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e8-9', source: '8', target: '9', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e10-11', source: '10', target: '11', animated: true, markerEnd: { type: 'arrowclosed' } },
-  { id: 'e11-8', source: '11', target: '8', animated: true, markerEnd: { type: 'arrowclosed' } },
+  { id: 'e1-2', source: '1', target: '2', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e2-3', source: '2', target: '3', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e3-4', source: '3', target: '4', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e4-5', source: '4', target: '5', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e5-6', source: '5', target: '6', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e6-7', source: '6', target: '7', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e7-8', source: '7', target: '8', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e8-9', source: '8', target: '9', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e10-11', source: '10', target: '11', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e11-8', source: '11', target: '8', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
 ];
 
 function ModelArchitectureFlow() {

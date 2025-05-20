@@ -23,7 +23,7 @@ const defaultNodeStyle = {
   padding: '10px',
   border: '1px solid #aaa',
   borderRadius: '5px',
-  backgroundColor: '#f2f2f2',
+  backgroundColor: '#ffdab9',
 };
 
 /*
@@ -39,7 +39,7 @@ const styles = {
     border: '2px dotted #999',
     borderRadius: 6,
     position: 'relative',
-    background: '#fafafa',
+    background: '#81b6f7',
     fontSize: 12,
     fontFamily: 'sans-serif',
     textAlign: 'center',
@@ -62,7 +62,7 @@ const styles = {
     margin: '4px 8px',
     borderRadius: 4,
     padding: 6,
-    background: '#fff',
+    background: '#e8f3ff',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -78,7 +78,7 @@ const styles = {
     border: '1px solid #ccc',
     borderRadius: 4,
     padding: '6px',
-    background: '#fff',
+    background: '#f5f9ff',
     fontSize: 12,
   },
 };
@@ -143,7 +143,11 @@ const initialNodes = [
     id: 'embeddings',
     position: { x: 15, y: 100 },
     data: { label: 'Embeddings' },
-    style: { ...defaultNodeStyle, width: 120 },
+    style: { 
+      ...defaultNodeStyle, 
+      width: 120,
+      backgroundColor: '#edffb0'
+    },
   },
   {
     id: 'nx-block',
@@ -155,19 +159,30 @@ const initialNodes = [
     id: 'linear',
     position: { x: 35, y: 475 },
     data: { label: 'Linear' },
-    style: { ...defaultNodeStyle, width: 80 },
+    style: { 
+      ...defaultNodeStyle, 
+      width: 80,
+      backgroundColor: '#d8bfd8'
+    },
   },
   {
     id: 'softmax',
     position: { x: 35, y: 525 },
     data: { label: 'Softmax' },
-    style: { ...defaultNodeStyle, width: 80 },
+    style: { 
+      ...defaultNodeStyle, 
+      width: 80,
+      backgroundColor: '#95e6af'
+    },
   },
   {
     id: 'output',
     position: { x: 0, y: 575 },
     data: { label: 'Output' },
-    style: { ...defaultNodeStyle },
+    style: { 
+      ...defaultNodeStyle,
+      backgroundColor: '#95e6af'
+    },
     type: 'output',
   },
 ];
@@ -182,38 +197,49 @@ const initialEdges = [
     id: 'edge-input-emb',
     source: 'input',
     target: 'embeddings',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge-emb-linear',
     source: 'embeddings',
     target: 'linear',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge-emb-nx',
     source: 'embeddings',
     target: 'nx-block',
-    markerEnd: { type: MarkerType.ArrowClosed },
-    style: { stroke: 'rgba(0, 0, 0, 0.2)' },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge-nx-linear',
     source: 'nx-block',
     target: 'linear',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge-linear-softmax',
     source: 'linear',
     target: 'softmax',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
   {
     id: 'edge-softmax-output',
     source: 'softmax',
     target: 'output',
-    markerEnd: { type: MarkerType.ArrowClosed },
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' },
   },
 ];
 

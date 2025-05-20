@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactFlow, { MiniMap, Controls, Background } from 'reactflow';
+import ReactFlow, { MiniMap, Controls, Background, MarkerType } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 const initialNodes = [
@@ -17,7 +17,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9', // peach
     },
   },
   {
@@ -33,7 +33,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#edffb0', // yellow
         width: 250
     },
   },
@@ -51,7 +51,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#ffdab9', // peach
     },
   },
   {
@@ -67,7 +67,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#edffb0', // yellow
         width: 250
     },
   },
@@ -85,7 +85,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f7a881', // orange
     },
   },
   // Core Transformer Backbone
@@ -102,7 +102,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#81b6f7', // blue
         width: 300
     },
   },
@@ -120,7 +120,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8', // lavender
         width: 250
     },
   },
@@ -138,7 +138,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8', // lavender
     },
   },
   // Final Output
@@ -155,27 +155,27 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#95e6af', // green
     },
   },
 ];
 
 const initialEdges = [
   // Text branch flow
-  { id: 'e1-2', source: '1', target: '2',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e1-2', source: '1', target: '2', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
   // Image branch flow
-  { id: 'e3-4', source: '3', target: '4',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e3-4', source: '3', target: '4', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
   // Fusion step: merging text and image information
-  { id: 'e2-5', source: '2', target: '5',  markerEnd: { type: 'arrowclosed' } },
-  { id: 'e4-5', source: '4', target: '5',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e2-5', source: '2', target: '5', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
+  { id: 'e4-5', source: '4', target: '5', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
   // Core transformer processing
-  { id: 'e5-6', source: '5', target: '6',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e5-6', source: '5', target: '6', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
   // Domain-specific fine-tuning feeds into core processing
-  { id: 'e7-6', source: '7', target: '6', animated: true },
+  { id: 'e7-6', source: '7', target: '6', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
   // Alignment layer applied after processing
-  { id: 'e6-8', source: '6', target: '8',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e6-8', source: '6', target: '8', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
   // Final output generation
-  { id: 'e8-9', source: '8', target: '9',  markerEnd: { type: 'arrowclosed' } },
+  { id: 'e8-9', source: '8', target: '9', animated: true, style: { stroke: '#ff0000' }, markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' } },
 ];
 
 function Claude3OpusFlow() {

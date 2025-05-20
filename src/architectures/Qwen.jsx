@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactFlow, { MiniMap, Controls, Background } from 'reactflow';
+import ReactFlow, { MiniMap, Controls, Background, MarkerType } from 'reactflow';
 import 'reactflow/dist/style.css';
 
 const initialNodes = [
@@ -17,7 +17,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#81b6f7',
         width: 200
     },
   },
@@ -35,7 +35,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f7a881',
         width: 200
     },
   },
@@ -53,7 +53,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#edffb0',
         width: 200
     },
   },
@@ -70,7 +70,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#edffb0',
         width: 200
     },
   },
@@ -87,7 +87,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -104,7 +104,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -121,7 +121,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 225
     },
   },
@@ -139,7 +139,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#f7a881',
         width: 250
     },
   },
@@ -156,7 +156,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -173,7 +173,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -190,7 +190,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -208,7 +208,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#81b6f7',
         width: 200
     },
   },
@@ -225,7 +225,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -242,7 +242,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -259,7 +259,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -276,7 +276,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -293,7 +293,7 @@ const initialNodes = [
         padding: '10px',
         border: '1px solid #aaa',
         borderRadius: '5px',
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#d8bfd8',
         width: 200
     },
   },
@@ -301,25 +301,137 @@ const initialNodes = [
 
 const initialEdges = [
   // Architecture flow (removed edges referencing deleted nodes)
-  { id: 'e3', source: 'transformer', target: 'enhancements' },
+  { 
+    id: 'e3', 
+    source: 'transformer', 
+    target: 'enhancements',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
   // Enhancements branching out
-  { id: 'e4', source: 'enhancements', target: 'embedding' },
-  { id: 'e5', source: 'enhancements', target: 'rope' },
-  { id: 'e6', source: 'enhancements', target: 'norm' },
-  { id: 'e7', source: 'enhancements', target: 'activation' },
-  { id: 'e8', source: 'enhancements', target: 'bias-handling' },
+  { 
+    id: 'e4', 
+    source: 'enhancements', 
+    target: 'embedding',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e5', 
+    source: 'enhancements', 
+    target: 'rope',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e6', 
+    source: 'enhancements', 
+    target: 'norm',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e7', 
+    source: 'enhancements', 
+    target: 'activation',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e8', 
+    source: 'enhancements', 
+    target: 'bias-handling',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
   // Training optimization from transformer
-  { id: 'e9', source: 'transformer', target: 'training' },
-  { id: 'e10', source: 'training', target: 'optimizer' },
-  { id: 'e11', source: 'training', target: 'batch' },
-  { id: 'e12', source: 'training', target: 'context' },
+  { 
+    id: 'e9', 
+    source: 'transformer', 
+    target: 'training',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e10', 
+    source: 'training', 
+    target: 'optimizer',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e11', 
+    source: 'training', 
+    target: 'batch',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e12', 
+    source: 'training', 
+    target: 'context',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
   // Attention mechanisms
-  { id: 'e13', source: 'training', target: 'attention' },
-  { id: 'e14', source: 'attention', target: 'moe' },
-  { id: 'e15', source: 'attention', target: 'flash' },
-  { id: 'e16', source: 'attention', target: 'logn' },
-  { id: 'e17', source: 'attention', target: 'window' },
-  { id: 'e18', source: 'attention', target: 'ntk' },
+  { 
+    id: 'e13', 
+    source: 'training', 
+    target: 'attention',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e14', 
+    source: 'attention', 
+    target: 'moe',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e15', 
+    source: 'attention', 
+    target: 'flash',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e16', 
+    source: 'attention', 
+    target: 'logn',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e17', 
+    source: 'attention', 
+    target: 'window',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
+  { 
+    id: 'e18', 
+    source: 'attention', 
+    target: 'ntk',
+    animated: true,
+    style: { stroke: '#ff0000' },
+    markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: '#ff0000' }
+  },
 ];
 
 const QwenFlow = () => {

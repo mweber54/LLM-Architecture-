@@ -6,6 +6,8 @@ import ReactFlow, {
   addEdge,
   Handle,
   Position,
+  getBezierPath,
+  BaseEdge,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -19,7 +21,7 @@ const DataPrepNode = ({ data }) => (
     padding: '10px',
     border: '1px solid #aaa',
     borderRadius: '5px',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#FFE4B5',
     width: '220px'
   }}>
     {data.label}
@@ -30,7 +32,7 @@ const DataPrepNode = ({ data }) => (
   </div>
 );
 
-// Custom node for Stage 1: Cold Start SFT: has a top vertical handle, a right-hand info handle, and a bottom vertical handle
+// Custom node for Stage 1: Cold Start SFT
 const Stage1SFTNode = ({ data }) => (
   <div style={{
     fontFamily: 'monospace',
@@ -40,22 +42,18 @@ const Stage1SFTNode = ({ data }) => (
     padding: '10px',
     border: '1px solid #aaa',
     borderRadius: '5px',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#E6F3FF', // Light blue
     width: '220px'
   }}>
     {data.label}
-    {/* Top handle for receiving vertical chain connection */}
     <Handle type="target" position={Position.Top} id="stage1Top" style={{ background: '#555' }} />
-    {/* Right-hand handle for info connection */}
     <Handle type="source" position={Position.Right} id="stage1Info" style={{ background: '#555' }} />
-    {/* Bottom handle for vertical chain connection */}
     <Handle type="source" position={Position.Bottom} id="stage1Bottom" style={{ background: '#555' }} />
   </div>
 );
 
-// Generic vertical chain node for nodes that don't need an extra info handle.
-// It renders a top target handle and, unless it's final, a bottom source handle.
-const VerticalChainNode = ({ data }) => (
+// Generic vertical chain node
+const VerticalChainNode = ({ data, id }) => (
   <div style={{
     fontFamily: 'monospace',
     fontWeight: 'bold',
@@ -64,13 +62,16 @@ const VerticalChainNode = ({ data }) => (
     padding: '10px',
     border: '1px solid #aaa',
     borderRadius: '5px',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: id === 'final-model' ? '#4D99FF' : // Deepest blue for final node
+                    id.includes('stage2') ? '#CCE5FF' : // Light blue for stage 2
+                    id.includes('stage3') ? '#99CCFF' : // Medium blue for stage 3
+                    id.includes('stage4') ? '#66B2FF' : // Deep blue for stage 4
+                    id.includes('stage5') ? '#3399FF' : // Darker blue for stage 5
+                    '#E6F3FF', // Default light blue
     width: '220px'
   }}>
     {data.label}
-    {/* Top handle for incoming vertical connection */}
     <Handle type="target" position={Position.Top} id={data.topId} style={{ background: '#555' }} />
-    {/* Bottom handle for outgoing vertical connection if not final */}
     {!data.isFinal && (
       <Handle type="source" position={Position.Bottom} id={data.bottomId} style={{ background: '#555' }} />
     )}
@@ -97,6 +98,30 @@ const InfoNode = ({ data }) => (
   </div>
 );
 
+// Add this custom edge component before the node components
+const RedArrowEdge = ({ id, sourceX, sourceY, targetX, targetY }) => {
+  const [edgePath] = getBezierPath({ sourceX, sourceY, targetX, targetY });
+
+  return (
+    <>
+      <defs>
+        <marker
+          id="arrow-red"
+          markerWidth="6"
+          markerHeight="6"
+          refX="6"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d="M0,0 L6,3 L0,6 Z" fill="red" />
+        </marker>
+      </defs>
+      <BaseEdge id={id} path={edgePath} markerEnd="url(#arrow-red)" style={{ stroke: 'red' }} />
+    </>
+  );
+};
+
 const initialNodes = [
   // Data Preprocessing node with custom DataPrepNode type
   {
@@ -113,6 +138,7 @@ const initialNodes = [
       )
     },
     position: { x: 50, y: 0 },
+    style: { backgroundColor: '#FFE5B5'},
   },
   // Base Model node (vertical chain node)
   {
@@ -350,9 +376,23 @@ const nodeTypes = {
   infoNode: InfoNode,
 };
 
-const processedEdges = initialEdges.map(edge =>
-  !edge.animated ? { ...edge, markerEndId: { type: 'arrowclosed' } } : edge
-);
+// Add edgeTypes object
+const edgeTypes = {
+  redArrow: RedArrowEdge,
+};
+
+// Update the processedEdges to use the red arrow for all edges except info edges
+// ... existing code ...
+
+// Update the processedEdges to make all edges animated
+const processedEdges = initialEdges.map(edge => ({
+  ...edge,
+  animated: true,
+  type: !edge.id.includes('info') ? 'redArrow' : undefined,
+  style: edge.id.includes('info') ? { stroke: '#4D6BFE' } : undefined
+}));
+
+// ... existing code ...
 
 function DeepSeekR1() {
   const [nodes] = useState(initialNodes);
@@ -370,6 +410,7 @@ function DeepSeekR1() {
         edges={edges}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         nodesDraggable={true}
         fitView
       >
